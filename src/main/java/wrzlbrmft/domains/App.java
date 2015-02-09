@@ -1,5 +1,7 @@
 package wrzlbrmft.domains;
 
+import org.apache.commons.cli.Options;
+
 public final class App implements Runnable {
 	private static App instance;
 
@@ -10,6 +12,12 @@ public final class App implements Runnable {
 			instance = new App();
 		}
 		return instance;
+	}
+
+	public static Options getOptions() {
+		Options options = Main.getOptions();
+
+		return options;
 	}
 
 	@Override
