@@ -7,6 +7,7 @@ public final class App implements Runnable {
 	private static App instance;
 
 	protected DomainList domains = null;
+	protected DomainList exceptions = null;
 
 	private App() {}
 
@@ -25,6 +26,14 @@ public final class App implements Runnable {
 		this.domains = domains;
 	}
 
+	public DomainList getExceptions() {
+		return exceptions;
+	}
+
+	public void setExceptions(DomainList exceptions) {
+		this.exceptions = exceptions;
+	}
+
 	public static Options getOptions() {
 		Options options = Main.getOptions();
 
@@ -37,6 +46,14 @@ public final class App implements Runnable {
 		);
 
 		options.addOption(OptionBuilder
+				.withLongOpt("exceptions")
+				.withDescription("text file containing list of exceptions")
+				.hasArg()
+				.withArgName("file")
+				.create("e")
+		);
+
+		options.addOption(OptionBuilder
 				.withLongOpt("remove-redundant")
 				.withDescription("remove redundant list entries (e.g. \".com\" includes \".foobar.com\", so \".foobar.com\" is removed)")
 				.create("r")
@@ -45,6 +62,14 @@ public final class App implements Runnable {
 		options.addOption(OptionBuilder
 				.withLongOpt("save-domains")
 				.withDescription("save optimized list of domains in text file")
+				.hasArg()
+				.withArgName("file")
+				.create()
+		);
+
+		options.addOption(OptionBuilder
+				.withLongOpt("save-exceptions")
+				.withDescription("save optimized list of exceptions in text file")
 				.hasArg()
 				.withArgName("file")
 				.create()
@@ -70,6 +95,23 @@ public final class App implements Runnable {
 		return false;
 	}
 
+	public boolean loadExceptions() {
+		if (Main.getCommandLine().hasOption("exceptions")) {
+			String exceptionsFileName = Main.getCommandLine().getOptionValue("exceptions");
+			setExceptions(new DomainList(exceptionsFileName));
+			return true;
+		}
+		return false;
+	}
+
+	public boolean saveExceptions() {
+		if (Main.getCommandLine().hasOption("save-exceptions")) {
+			String saveExceptionsFileName = Main.getCommandLine().getOptionValue("save-exceptions");
+			return getExceptions().save(saveExceptionsFileName);
+		}
+		return false;
+	}
+
 	@Override
 	public void run() {
 		if (loadDomains()) {
@@ -81,6 +123,16 @@ public final class App implements Runnable {
 			}
 		}
 
+		if (loadExceptions()) {
+			if (Main.getCommandLine().hasOption("remove-redundant")) {
+				DomainList redundantExceptions = new DomainList(getExceptions().removeRedundant());
+
+				System.out.println("redundant exceptions = " + redundantExceptions);
+				System.out.println("unique exceptions = " + getExceptions());
+			}
+		}
+
 		saveDomains();
+		saveExceptions();
 	}
 }
