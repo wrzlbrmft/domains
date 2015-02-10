@@ -3,6 +3,9 @@ package wrzlbrmft.domains;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
+import java.util.Iterator;
+import java.util.SortedSet;
+
 public final class App implements Runnable {
 	private static App instance;
 
@@ -76,7 +79,7 @@ public final class App implements Runnable {
 				.withDescription("save optimized domains list to text file")
 				.hasArg()
 				.withArgName("file")
-				.create()
+				.create("s")
 		);
 
 		options.addOption(OptionBuilder
@@ -84,7 +87,7 @@ public final class App implements Runnable {
 				.withDescription("save optimized exceptions list to text file")
 				.hasArg()
 				.withArgName("file")
-				.create()
+				.create("x")
 		);
 
 		return options;
@@ -142,6 +145,33 @@ public final class App implements Runnable {
 				System.out.println("redundant exceptions = " + redundantExceptions);
 				System.out.println("unique exceptions = " + getExceptions());
 			}
+		}
+
+		if (null != getDomains() && null != getExceptions()) {
+			Iterator<Domain> exceptionsIterator = getExceptions().iterator();
+			while (exceptionsIterator.hasNext()) {
+				Domain exception = exceptionsIterator.next();
+
+				SortedSet<Domain> obsoleteDomains = getDomains().findChildrenOf(exception);
+
+				if (0 < obsoleteDomains.size()) {
+					if (Main.getCommandLine().hasOption("remove-obsolete-domains")) {
+						getDomains().remove(obsoleteDomains);
+					}
+				}
+
+				if (0 == obsoleteDomains.size() || Main.getCommandLine().hasOption("remove-obsolete-domains")) {
+					Domain parent = exception.findParentIn(getDomains().getDomains());
+					if (null == parent) {
+						if (Main.getCommandLine().hasOption("remove-unused-exceptions")) {
+							exceptionsIterator.remove();
+						}
+					}
+				}
+			}
+
+			System.out.println("optimized domains = " + getDomains());
+			System.out.println("optimized exceptions = " + getExceptions());
 		}
 
 		saveDomains();

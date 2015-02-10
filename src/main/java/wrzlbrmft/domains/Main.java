@@ -72,7 +72,7 @@ public class Main {
 		options.addOption(OptionBuilder
 				.withLongOpt("version")
 				.withDescription("print version info and exit")
-				.create("v")
+				.create()
 		);
 
 		options.addOption(OptionBuilder

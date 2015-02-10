@@ -1,0 +1,3 @@
+.com
+www.foobar.de
+barfoo.net
