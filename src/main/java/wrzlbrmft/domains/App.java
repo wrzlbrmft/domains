@@ -39,7 +39,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("domains")
-				.withDescription("text file containing list of domains")
+				.withDescription("load domains list from text file")
 				.hasArg()
 				.withArgName("file")
 				.create("d")
@@ -47,7 +47,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("exceptions")
-				.withDescription("text file containing list of exceptions")
+				.withDescription("load exceptions list from text file")
 				.hasArg()
 				.withArgName("file")
 				.create("e")
@@ -55,13 +55,13 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("remove-redundant")
-				.withDescription("remove redundant list entries (e.g. \".com\" includes \".foobar.com\", so \".foobar.com\" is removed)")
+				.withDescription("remove redundant list entries (e.g. \".foo.com\" includes \".bar.foo.com\", so \".bar.foo.com\" is removed)")
 				.create("r")
 		);
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-domains")
-				.withDescription("save optimized list of domains in text file")
+				.withDescription("save optimized domains list to text file")
 				.hasArg()
 				.withArgName("file")
 				.create()
@@ -69,7 +69,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-exceptions")
-				.withDescription("save optimized list of exceptions in text file")
+				.withDescription("save optimized exceptions list to text file")
 				.hasArg()
 				.withArgName("file")
 				.create()
