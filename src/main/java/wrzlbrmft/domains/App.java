@@ -42,6 +42,14 @@ public final class App implements Runnable {
 				.create("r")
 		);
 
+		options.addOption(OptionBuilder
+				.withLongOpt("save-domains")
+				.withDescription("save optimized list of domains in text file")
+				.hasArg()
+				.withArgName("file")
+				.create()
+		);
+
 		return options;
 	}
 
@@ -58,6 +66,11 @@ public final class App implements Runnable {
 
 				System.out.println("redundant domains = " + redundantDomains);
 				System.out.println("unique domains = " + getDomains());
+			}
+
+			if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("save-domains")) {
+				String saveDomainsFileName = Main.getCommandLine().getOptionValue("save-domains");
+				getDomains().save(saveDomainsFileName);
 			}
 		}
 	}

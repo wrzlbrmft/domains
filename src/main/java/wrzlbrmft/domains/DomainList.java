@@ -44,6 +44,14 @@ public class DomainList implements Iterable<Domain> {
 		return getDomains().iterator();
 	}
 
+	public SortedSet<String> getDomainNames() {
+		SortedSet<String> domainNames = new TreeSet<>();
+		for (Domain domain : getDomains()) {
+			domainNames.add(domain.getName());
+		}
+		return domainNames;
+	}
+
 	public boolean load(String fileName) {
 		try {
 			List<String> lines = FileUtils.readLines(FileUtils.getFile(fileName));
@@ -60,6 +68,17 @@ public class DomainList implements Iterable<Domain> {
 					}
 				}
 			}
+			return true;
+		}
+		catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+
+	public boolean save(String fileName) {
+		try {
+			FileUtils.writeLines(FileUtils.getFile(fileName), getDomainNames(), System.lineSeparator());
 			return true;
 		}
 		catch (IOException e) {
