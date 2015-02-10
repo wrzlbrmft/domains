@@ -92,8 +92,8 @@ public class DomainList implements Iterable<Domain> {
 		SortedSet<Domain> redundantDomains = new TreeSet<>();
 
 		for (Domain domain : getDomains()) {
-			Domain endsWith = domain.endsWith(uniqueDomains);
-			if (null == endsWith) {
+			Domain parent = domain.findParentIn(uniqueDomains);
+			if (null == parent) {
 				uniqueDomains.add(domain);
 			}
 			else {

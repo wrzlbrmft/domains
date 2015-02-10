@@ -51,7 +51,7 @@ public class Domain implements Comparable<Domain> {
 		return name.toLowerCase();
 	}
 
-	public Domain endsWith(SortedSet<Domain> domains) {
+	public Domain findParentIn(SortedSet<Domain> domains) {
 		for (Domain domain : domains) {
 			if (getName().endsWith(domain.getName())) {
 				return domain;
