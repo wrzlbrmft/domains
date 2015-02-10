@@ -129,7 +129,7 @@ public class Main {
 			System.exit(1);
 		}
 
-		App.optionListFileName();
+		App.optionDomainsFileName();
 
 		System.out.println(String.format(
 				"starting %s",

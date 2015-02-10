@@ -2,12 +2,13 @@ package wrzlbrmft.domains;
 
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.StringUtils;
 
 public final class App implements Runnable {
 	private static App instance;
 
-	protected String listFileName;
-	protected DomainList list;
+	protected String domainsFileName;
+	protected DomainList domains;
 
 	private App() {}
 
@@ -18,48 +19,50 @@ public final class App implements Runnable {
 		return instance;
 	}
 
-	public String getListFileName() {
-		return listFileName;
+	public String getDomainsFileName() {
+		return domainsFileName;
 	}
 
-	public void setListFileName(String listFileName) {
-		this.listFileName = listFileName;
+	public void setDomainsFileName(String domainsFileName) {
+		this.domainsFileName = domainsFileName;
 	}
 
-	public DomainList getList() {
-		return list;
+	public DomainList getDomains() {
+		return domains;
 	}
 
-	public void setList(DomainList list) {
-		this.list = list;
+	public void setDomains(DomainList domains) {
+		this.domains = domains;
 	}
 
 	public static Options getOptions() {
 		Options options = Main.getOptions();
 
 		options.addOption(OptionBuilder
-				.withLongOpt("list")
+				.withLongOpt("domains")
 				.withDescription("text file containing list of domains")
 				.hasArg()
 				.withArgName("file")
-				.create("l")
+				.create("d")
 		);
 
 		return options;
 	}
 
-	public static void optionListFileName() {
-		if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("list")) {
-			App.getInstance().setListFileName(Main.getCommandLine().getOptionValue("list"));
+	public static void optionDomainsFileName() {
+		if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("domains")) {
+			App.getInstance().setDomainsFileName(Main.getCommandLine().getOptionValue("domains"));
 		}
 	}
 
 	@Override
 	public void run() {
-		setList(new DomainList(getListFileName()));
+		if (StringUtils.isNotBlank(getDomainsFileName())) {
+			setDomains(new DomainList(getDomainsFileName()));
 
-		for (Domain domain : list) {
-			System.out.println(domain);
+			for (Domain domain : getDomains()) {
+				System.out.println(domain);
+			}
 		}
 	}
 }
