@@ -2,13 +2,11 @@ package wrzlbrmft.domains;
 
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.lang3.StringUtils;
 
 public final class App implements Runnable {
 	private static App instance;
 
-	protected String domainsFileName;
-	protected DomainList domains;
+	protected DomainList domains = null;
 
 	private App() {}
 
@@ -17,14 +15,6 @@ public final class App implements Runnable {
 			instance = new App();
 		}
 		return instance;
-	}
-
-	public String getDomainsFileName() {
-		return domainsFileName;
-	}
-
-	public void setDomainsFileName(String domainsFileName) {
-		this.domainsFileName = domainsFileName;
 	}
 
 	public DomainList getDomains() {
@@ -55,17 +45,14 @@ public final class App implements Runnable {
 		return options;
 	}
 
-	public static void optionDomainsFileName() {
-		if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("domains")) {
-			App.getInstance().setDomainsFileName(Main.getCommandLine().getOptionValue("domains"));
-		}
-	}
-
 	@Override
 	public void run() {
-		if (StringUtils.isNotBlank(getDomainsFileName())) {
-			setDomains(new DomainList(getDomainsFileName()));
+		if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("domains")) {
+			String domainsFileName = Main.getCommandLine().getOptionValue("domains");
+			setDomains(new DomainList(domainsFileName));
+		}
 
+		if (null != getDomains()) {
 			if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("remove-redundant")) {
 				DomainList redundantDomains = new DomainList(getDomains().removeRedundant());
 
