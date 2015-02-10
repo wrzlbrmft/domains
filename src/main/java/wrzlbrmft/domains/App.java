@@ -53,25 +53,34 @@ public final class App implements Runnable {
 		return options;
 	}
 
-	@Override
-	public void run() {
-		if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("domains")) {
+	public boolean loadDomains() {
+		if (Main.getCommandLine().hasOption("domains")) {
 			String domainsFileName = Main.getCommandLine().getOptionValue("domains");
 			setDomains(new DomainList(domainsFileName));
+			return true;
 		}
+		return false;
+	}
 
-		if (null != getDomains()) {
-			if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("remove-redundant")) {
+	public boolean saveDomains() {
+		if (Main.getCommandLine().hasOption("save-domains")) {
+			String saveDomainsFileName = Main.getCommandLine().getOptionValue("save-domains");
+			return getDomains().save(saveDomainsFileName);
+		}
+		return false;
+	}
+
+	@Override
+	public void run() {
+		if (loadDomains()) {
+			if (Main.getCommandLine().hasOption("remove-redundant")) {
 				DomainList redundantDomains = new DomainList(getDomains().removeRedundant());
 
 				System.out.println("redundant domains = " + redundantDomains);
 				System.out.println("unique domains = " + getDomains());
 			}
-
-			if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("save-domains")) {
-				String saveDomainsFileName = Main.getCommandLine().getOptionValue("save-domains");
-				getDomains().save(saveDomainsFileName);
-			}
 		}
+
+		saveDomains();
 	}
 }

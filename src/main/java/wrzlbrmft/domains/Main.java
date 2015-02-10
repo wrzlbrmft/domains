@@ -111,13 +111,19 @@ public class Main {
 		try {
 			parseCommandLine(args);
 
-			if (null != getCommandLine() && getCommandLine().hasOption("version")) {
+			if (null == getCommandLine()) {
+				System.out.println("error parsing command line (null)");
+
+				System.exit(1);
+			}
+
+			if (getCommandLine().hasOption("version")) {
 				printVersionInfo();
 
 				System.exit(0);
 			}
 
-			if (null != getCommandLine() && getCommandLine().hasOption("help")) {
+			if (getCommandLine().hasOption("help")) {
 				printHelpMessage();
 
 				System.exit(0);
