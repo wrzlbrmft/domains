@@ -90,6 +90,12 @@ public final class App implements Runnable {
 				.create("x")
 		);
 
+		options.addOption(OptionBuilder
+				.withLongOpt("verbose")
+				.withDescription("be more verbose")
+				.create("v")
+		);
+
 		return options;
 	}
 
