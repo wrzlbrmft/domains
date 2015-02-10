@@ -129,6 +129,8 @@ public class Main {
 			System.exit(1);
 		}
 
+		App.optionListFileName();
+
 		System.out.println(String.format(
 				"starting %s",
 				getVersionInfo()
