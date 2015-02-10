@@ -55,8 +55,20 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("remove-redundant")
-				.withDescription("remove redundant list entries (e.g. \".foo.com\" includes \".bar.foo.com\", so \".bar.foo.com\" is removed)")
+				.withDescription("remove redundant list entries (e.g. \".com\" includes \".foo.com\", so \".foo.com\" is redundant and removed)")
 				.create("r")
+		);
+
+		options.addOption(OptionBuilder
+				.withLongOpt("remove-unused-exceptions")
+				.withDescription("remove unused exceptions list entries (e.g. if \".com\" is NOT on the domains list, the exceptions list entry \".foo.com\" is unused and removed)")
+				.create("u")
+		);
+
+		options.addOption(OptionBuilder
+				.withLongOpt("remove-obsolete-domains")
+				.withDescription("remove obsolete domains list entries (e.g. if \".com\" is on the exceptions list, the domains list entry \".foo.com\" is obsolete and removed)")
+				.create("o")
 		);
 
 		options.addOption(OptionBuilder
