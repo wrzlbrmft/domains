@@ -20,12 +20,23 @@ public class DomainList implements Iterable<Domain> {
 		load(fileName);
 	}
 
+	public DomainList(SortedSet<Domain> domains) {
+		this();
+
+		setDomains(domains);
+	}
+
 	public SortedSet<Domain> getDomains() {
 		return domains;
 	}
 
 	public void setDomains(SortedSet<Domain> domains) {
 		this.domains = domains;
+	}
+
+	@Override
+	public String toString() {
+		return "{" + StringUtils.join(this, ",") + "}";
 	}
 
 	@Override
@@ -55,5 +66,23 @@ public class DomainList implements Iterable<Domain> {
 			System.out.println(e.getMessage());
 		}
 		return false;
+	}
+
+	public SortedSet<Domain> removeRedundant() {
+		SortedSet<Domain> uniqueDomains = new TreeSet<>();
+		SortedSet<Domain> redundantDomains = new TreeSet<>();
+
+		for (Domain domain : getDomains()) {
+			Domain endsWith = domain.endsWith(uniqueDomains);
+			if (null == endsWith) {
+				uniqueDomains.add(domain);
+			}
+			else {
+				redundantDomains.add(domain);
+			}
+		}
+		setDomains(uniqueDomains);
+
+		return redundantDomains;
 	}
 }

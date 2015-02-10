@@ -1,2 +1,3 @@
 foo.com
+.com
 bar.com

@@ -2,6 +2,8 @@ package wrzlbrmft.domains;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.SortedSet;
+
 public class Domain implements Comparable<Domain> {
 	protected String name;
 
@@ -47,5 +49,14 @@ public class Domain implements Comparable<Domain> {
 		}
 
 		return name.toLowerCase();
+	}
+
+	public Domain endsWith(SortedSet<Domain> domains) {
+		for (Domain domain : domains) {
+			if (getName().endsWith(domain.getName())) {
+				return domain;
+			}
+		}
+		return null;
 	}
 }

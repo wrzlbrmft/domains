@@ -46,6 +46,12 @@ public final class App implements Runnable {
 				.create("d")
 		);
 
+		options.addOption(OptionBuilder
+				.withLongOpt("remove-redundant")
+				.withDescription("remove redundant list entries (e.g. \".com\" includes \".foobar.com\", so \".foobar.com\" is removed)")
+				.create("r")
+		);
+
 		return options;
 	}
 
@@ -60,8 +66,11 @@ public final class App implements Runnable {
 		if (StringUtils.isNotBlank(getDomainsFileName())) {
 			setDomains(new DomainList(getDomainsFileName()));
 
-			for (Domain domain : getDomains()) {
-				System.out.println(domain);
+			if (null != Main.getCommandLine() && Main.getCommandLine().hasOption("remove-redundant")) {
+				DomainList redundantDomains = new DomainList(getDomains().removeRedundant());
+
+				System.out.println("redundant domains = " + redundantDomains);
+				System.out.println("unique domains = " + getDomains());
 			}
 		}
 	}
