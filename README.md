@@ -50,7 +50,7 @@ All available options are:
  -r,--remove-redundant           remove redundant list entries (e.g.
                                  ".com" includes ".foo.com", so ".foo.com"
                                  is redundant and removed)
- -s,--save-domains <file>        save optimized domain list to new text
+ -s,--save-domains <file>        save optimized domain list as new text
                                  file
  -u,--remove-unused-exceptions   remove unused exception list entries
                                  (e.g. if ".com" is NOT on the domain
@@ -58,7 +58,7 @@ All available options are:
                                  is unused and removed)
  -v,--verbose                    be more verbose
     --version                    print version info and exit
- -x,--save-exceptions <file>     save optimized exception list to new text
+ -x,--save-exceptions <file>     save optimized exception list as new text
                                  file
 ```
 
