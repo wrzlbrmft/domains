@@ -76,7 +76,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-domains")
-				.withDescription("save optimized domain list to new text file")
+				.withDescription("save optimized domain list as new text file")
 				.hasArg()
 				.withArgName("file")
 				.create("s")
@@ -84,7 +84,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-exceptions")
-				.withDescription("save optimized exception list to new text file")
+				.withDescription("save optimized exception list as new text file")
 				.hasArg()
 				.withArgName("file")
 				.create("x")
