@@ -42,7 +42,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("domains")
-				.withDescription("load domains list from text file")
+				.withDescription("load domain list from text file")
 				.hasArg()
 				.withArgName("file")
 				.create("d")
@@ -50,7 +50,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("exceptions")
-				.withDescription("load exceptions list from text file")
+				.withDescription("load exception list from text file")
 				.hasArg()
 				.withArgName("file")
 				.create("e")
@@ -64,19 +64,19 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("remove-unused-exceptions")
-				.withDescription("remove unused exceptions list entries (e.g. if \".com\" is NOT on the domains list, the exceptions list entry \".foo.com\" is unused and removed)")
+				.withDescription("remove unused exception list entries (e.g. if \".com\" is NOT on the domain list, the exception list entry \".foo.com\" is unused and removed)")
 				.create("u")
 		);
 
 		options.addOption(OptionBuilder
 				.withLongOpt("remove-obsolete-domains")
-				.withDescription("remove obsolete domains list entries (e.g. if \".com\" is on the exceptions list, the domains list entry \".foo.com\" is obsolete and removed)")
+				.withDescription("remove obsolete domain list entries (e.g. if \".com\" is on the exception list, the domain list entry \".foo.com\" is obsolete and removed)")
 				.create("o")
 		);
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-domains")
-				.withDescription("save optimized domains list to text file")
+				.withDescription("save optimized domain list to new text file")
 				.hasArg()
 				.withArgName("file")
 				.create("s")
@@ -84,7 +84,7 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("save-exceptions")
-				.withDescription("save optimized exceptions list to text file")
+				.withDescription("save optimized exception list to new text file")
 				.hasArg()
 				.withArgName("file")
 				.create("x")
