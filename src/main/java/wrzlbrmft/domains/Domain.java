@@ -33,7 +33,7 @@ public class Domain implements Comparable<Domain> {
 		String name = str;
 
 		if (name.contains("://")) {
-			name = StringUtils.substringAfter(name, "://");
+			name = StringUtils.substringAfterLast(name, "://");
 		}
 
 		if (name.contains(":")) {
