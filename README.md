@@ -12,7 +12,7 @@ of domain lists, e.g. to be used as whitelists or blacklists.
 * Check against an exclusion list and
   * Remove obsolete domain list entries
   * Remove unused exception list entries
-* Save optimized lists to new files
+* Save optimized lists as new files
 
 ## Download
 
@@ -24,14 +24,14 @@ To build the latest version by yourself, see below for *Build Instructions*.
 ## Usage
 
 Having installed the
-[Java Runtime Environment](http://java.com/de/download/manual.jsp),
-you can run *domains* with:
+[Java Runtime Environment](http://java.com/de/download/manual.jsp) 7+, you can
+run *domains* at the command-line or in Terminal with:
 
 ```
 java -jar domains.jar
 ```
 
-Append ``-h`` or ``--help`` to get a list of all available options:
+Append `-h` or `--help` to get a list of all available options:
 
 ```
 java -jar domains.jar -h
@@ -64,13 +64,15 @@ All available options are:
 
 ### Quick Start
 
-Load the domain list from ``domains.txt``, auto-correct and sort it, then remove
+Load the domain list from `domains.txt`, auto-correct and sort it, then remove
 both duplicate and redundant entries. Finally save the optimized domain list as
-``domains-optimized.txt``:
+`domains-optimized.txt`:
 
 ```
 java -jar domains.jar -d domains.txt -r -s domains-optimized.txt
 ```
+
+Read further for more available optimizations.
 
 ## Domain Lists
 
@@ -108,18 +110,18 @@ The following optimizations can be applied to both domain and exception lists.
 Malformed domain names are auto-corrected with a set of rules applied in the
 following order:
 
-1. remove the last ``://`` and everything before it
-2. remove the first ``:`` and everything after it
-3. remove the first ``/`` and everything after it
+1. remove the last `://` and everything before it
+2. remove the first `:` and everything after it
+3. remove the first `/` and everything after it
 4. ensure that the domain name starts with a dot (`.`)
 5. change to lower-case letters
 
-**NOTE:** Because of rule #4, ``[.]foo.com`` does not include ``[.]barfoo.com``
-even if you put ``foo.com`` on a list without the leading dot.
+**NOTE:** Because of rule #4, `[.]foo.com` does not include `[.]barfoo.com` even
+if you put `foo.com` on a list without the leading dot.
 
 **Example**
 
-All of the following entries are auto-corrected to ``.www.foo.com``:
+All of the following entries are auto-corrected to `.www.foo.com`:
 
 ```
 http://www.foo.com/
@@ -132,7 +134,7 @@ https://www.foo.com/bar/index.html
 
 *(Sorting is always applied to any list loaded.)*
 
-Domain names are sorted as reverse-strings (``.foo.com`` as `moc.oof.`) to keep
+Domain names are sorted as reverse-strings (`.foo.com` as `moc.oof.`) to keep
 different sub-domains next to each other.
 
 **Example**
@@ -163,7 +165,7 @@ domain name, then being de-duplicated.
 #### Remove Redundant List Entries
 
 Domain names always include all their sub-domains. Therefore, in the following
-list, all entries except ``.com`` are redundant:
+list, all entries except `.com` are redundant:
 
 ```
 .foo.com
@@ -171,7 +173,7 @@ list, all entries except ``.com`` are redundant:
 .bar.com
 ```
 
-Using the ``-r`` or ``--remove-redundant`` command-line options will remove the
+Use the `-r` or `--remove-redundant` command-line options to remove the
 redundant list entries.
 
 ### Exception Lists
@@ -179,8 +181,16 @@ redundant list entries.
 The following optimizations can only be applied when loading a domain list *and*
 an exception list.
 
-Use the ``-e`` or ``--exceptions`` command-line option to load an exception
-list.
+Use the `-e` or `--exceptions` command-line option to load an exception list.
+
+**Example**
+
+Load the domain list from `domains.txt` and the exception list from
+`exceptions.txt`:
+
+```
+java -jar domains.jar -d domains.txt -e exceptions.txt
+```
 
 #### Remove Obsolete Domain List Entries
 
@@ -198,11 +208,11 @@ Exception list:
 .foo.com
 ```
 
-Since the exception ``.foo.com`` includes ``.www.foo.com`` on the domain list,
-``.www.foo.com`` can be removed.
+Since the exception `.foo.com` includes `.www.foo.com` on the domain list,
+`.www.foo.com` can be removed from the domain list.
 
-Using the ``-o`` or ``--remove-obsolete-domains`` command-line option will
-remove the obsolete domain list entries.
+Use the `-o` or `--remove-obsolete-domains` command-line option to remove the
+obsolete domain list entries.
 
 #### Remove Unused Exception List Entries
 
@@ -220,25 +230,26 @@ Exception list:
 .bar.com
 ```
 
-Since ``.bar.com`` is not a sub-domain of any domain list entry, it can be
-removed.
+Since `.bar.com` is not a sub-domain of any domain list entry, it can be removed
+from the exception list.
 
-Using the ``-u`` or ``--remove-unused-exceptions`` command-line option will
-remove the unused exception list entries.
+Use the `-u` or `--remove-unused-exceptions` command-line option to remove the
+unused exception list entries.
 
 ### Save Optimized Lists
 
-All optimizations are applied to the copies of the domain and/or exception list
-files loaded to memory. The original files are never changed but you can save
+All optimizations are applied to copies of the domain and/or exception list
+files loaded into memory. The original files are never changed but you can save
 the optimized lists from memory as new files.
 
-Use the ``-s`` or ``--save-domains`` command-line option to save the optimized
-domain list, and the ``-x`` or ``--save-exceptions`` command-line option to save
-the optimized exception list as a new file.
+Use the `-s` or `--save-domains` command-line option to save the optimized
+domain list, and the `-x` or `--save-exceptions` command-line option to save the
+optimized exception list as a new file.
 
 **Example**
 
-The optimized domain list will be saved as ``domains-optimized.txt``:
+Load the domain list from `domains.txt` and save the optimized domain list as
+`domains-optimized.txt`:
 
 ```
 java -jar domains.jar -d domains.txt -s domains-optimized.txt
@@ -255,7 +266,8 @@ Or you can easily build the latest version by yourself.
 
 **Requirements**
 
-* [Java SE 7+](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+7+
 * [Maven](http://maven.apache.org/)
 * maybe [Git](http://git-scm.com/)
 
@@ -266,15 +278,14 @@ file](https://github.com/wrzlbrmft/domains/archive/master.zip) or use Git:
 git clone https://github.com/wrzlbrmft/domains.git
 ```
 
-Switch to the checkout directory and run Maven:
+Change into the unzipped or the checkout directory and run Maven:
 
 ```
-cd domains
 mvn package
 ```
 
 The uber-jar containing both the compiled source code and all of its
-dependencies is saved in the ``target/`` directory.
+dependencies is saved in the `target/` directory.
 
 Simply run it:
 
