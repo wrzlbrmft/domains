@@ -53,6 +53,11 @@ public class DomainList implements Iterable<Domain> {
 	}
 
 	public boolean load(String fileName) {
+		System.out.println(String.format(
+				"    reading from file '%s'...",
+				fileName
+		));
+
 		try {
 			List<String> lines = FileUtils.readLines(FileUtils.getFile(fileName));
 			for (String line : lines) {
@@ -65,24 +70,39 @@ public class DomainList implements Iterable<Domain> {
 						if (!getDomains().contains(domain)) {
 							getDomains().add(domain);
 						}
+						else {
+							if (Main.getCommandLine().hasOption("verbose")) {
+								System.out.println(String.format(
+										"    ... removed duplicate '%s'",
+										domain
+								));
+							}
+						}
 					}
 				}
 			}
+			System.out.println("    OK");
 			return true;
 		}
 		catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println("    ERROR: " + e.getMessage());
 		}
 		return false;
 	}
 
 	public boolean save(String fileName) {
+		System.out.println(String.format(
+				"    writing to file '%s'...",
+				fileName
+		));
+
 		try {
 			FileUtils.writeLines(FileUtils.getFile(fileName), getDomainNames(), System.lineSeparator());
+			System.out.println("    OK");
 			return true;
 		}
 		catch (IOException e) {
-			System.out.println(e.getMessage());
+			System.out.println("    ERROR: " + e.getMessage());
 		}
 		return false;
 	}
@@ -97,6 +117,13 @@ public class DomainList implements Iterable<Domain> {
 				uniqueDomains.add(domain);
 			}
 			else {
+				if (Main.getCommandLine().hasOption("verbose")) {
+					System.out.println(String.format(
+							"    ... removed redundant '%s'",
+							domain
+					));
+				}
+
 				redundantDomains.add(domain);
 			}
 		}
@@ -119,5 +146,9 @@ public class DomainList implements Iterable<Domain> {
 		for (Domain domain : domains) {
 			getDomains().remove(domain);
 		}
+	}
+
+	public int size() {
+		return getDomains().size();
 	}
 }

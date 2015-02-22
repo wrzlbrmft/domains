@@ -101,6 +101,7 @@ public final class App implements Runnable {
 
 	public boolean loadDomains() {
 		if (Main.getCommandLine().hasOption("domains")) {
+			System.out.println("*** load, sort and de-duplicate domain list");
 			String domainsFileName = Main.getCommandLine().getOptionValue("domains");
 			setDomains(new DomainList(domainsFileName));
 			return true;
@@ -110,6 +111,7 @@ public final class App implements Runnable {
 
 	public boolean saveDomains() {
 		if (Main.getCommandLine().hasOption("save-domains")) {
+			System.out.println("*** save optimized domain list");
 			String saveDomainsFileName = Main.getCommandLine().getOptionValue("save-domains");
 			return getDomains().save(saveDomainsFileName);
 		}
@@ -118,6 +120,7 @@ public final class App implements Runnable {
 
 	public boolean loadExceptions() {
 		if (Main.getCommandLine().hasOption("exceptions")) {
+			System.out.println("*** load, sort and de-duplicate exception list");
 			String exceptionsFileName = Main.getCommandLine().getOptionValue("exceptions");
 			setExceptions(new DomainList(exceptionsFileName));
 			return true;
@@ -127,6 +130,7 @@ public final class App implements Runnable {
 
 	public boolean saveExceptions() {
 		if (Main.getCommandLine().hasOption("save-exceptions")) {
+			System.out.println("*** save optimized exception list");
 			String saveExceptionsFileName = Main.getCommandLine().getOptionValue("save-exceptions");
 			return getExceptions().save(saveExceptionsFileName);
 		}
@@ -136,20 +140,38 @@ public final class App implements Runnable {
 	@Override
 	public void run() {
 		if (loadDomains()) {
+			System.out.println(String.format(
+					">>> %d domain(s)",
+					getDomains().size()
+			));
+
 			if (Main.getCommandLine().hasOption("remove-redundant")) {
+				System.out.println("*** remove redundant domain list entries");
 				DomainList redundantDomains = new DomainList(getDomains().removeRedundant());
 
-				System.out.println("redundant domains = " + redundantDomains);
-				System.out.println("unique domains = " + getDomains());
+				System.out.println(String.format(
+						">>> %d domain(s) (removed %d redundant domain(s))",
+						getDomains().size(),
+						redundantDomains.size()
+				));
 			}
 		}
 
 		if (loadExceptions()) {
+			System.out.println(String.format(
+					">>> %d exception(s)",
+					getExceptions().size()
+			));
+
 			if (Main.getCommandLine().hasOption("remove-redundant")) {
+				System.out.println("*** remove redundant exception list entries");
 				DomainList redundantExceptions = new DomainList(getExceptions().removeRedundant());
 
-				System.out.println("redundant exceptions = " + redundantExceptions);
-				System.out.println("unique exceptions = " + getExceptions());
+				System.out.println(String.format(
+						">>> %d exception(s) (removed %d redundant exception(s))",
+						getExceptions().size(),
+						redundantExceptions.size()
+				));
 			}
 		}
 
