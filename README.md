@@ -1,5 +1,7 @@
 # domains
 
+[![Build Status](https://travis-ci.org/wrzlbrmft/domains.svg?branch=master)](https://travis-ci.org/wrzlbrmft/domains)
+
 *domains* is a command-line tool written in Java for analysis and optimization
 of domain lists, e.g. to be used as whitelists or blacklists.
 
