@@ -216,7 +216,7 @@ obsolete domain list entries.
 
 #### Remove Unused Exception List Entries
 
-Any exception not being a sub-domain of a domain list entry is unsed.
+Any exception not being a sub-domain of a domain list entry is unused.
 
 **Example**
 
