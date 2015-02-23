@@ -48,7 +48,19 @@ public class Domain implements Comparable<Domain> {
 			name = "." + name;
 		}
 
-		return name.toLowerCase();
+		name = name.toLowerCase();
+
+		if (!name.equals(str)) {
+			if (Main.getCommandLine().hasOption("verbose")) {
+				System.out.println(String.format(
+						"    ... auto-corrected '%s' to '%s'",
+						str,
+						name
+				));
+			}
+		}
+
+		return name;
 	}
 
 	public Domain findParentIn(SortedSet<Domain> domains) {
