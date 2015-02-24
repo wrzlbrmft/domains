@@ -141,9 +141,10 @@ public final class App implements Runnable {
 	public void run() {
 		if (loadDomains()) {
 			System.out.println(String.format(
-					">>> %d domain(s)",
+					">>> %d domain(s) loaded",
 					getDomains().size()
 			));
+			System.out.println();
 
 			if (Main.getCommandLine().hasOption("remove-redundant")) {
 				System.out.println("*** remove redundant domain list entries");
@@ -154,14 +155,16 @@ public final class App implements Runnable {
 						getDomains().size(),
 						redundantDomains.size()
 				));
+				System.out.println();
 			}
 		}
 
 		if (loadExceptions()) {
 			System.out.println(String.format(
-					">>> %d exception(s)",
+					">>> %d exception(s) loaded",
 					getExceptions().size()
 			));
+			System.out.println();
 
 			if (Main.getCommandLine().hasOption("remove-redundant")) {
 				System.out.println("*** remove redundant exception list entries");
@@ -172,37 +175,94 @@ public final class App implements Runnable {
 						getExceptions().size(),
 						redundantExceptions.size()
 				));
+				System.out.println();
 			}
 		}
 
 		if (null != getDomains() && null != getExceptions()) {
-			Iterator<Domain> exceptionsIterator = getExceptions().iterator();
-			while (exceptionsIterator.hasNext()) {
-				Domain exception = exceptionsIterator.next();
+			System.out.println("*** analyze domains and exceptions");
 
-				SortedSet<Domain> obsoleteDomains = getDomains().findChildrenOf(exception);
+			if (Main.getCommandLine().hasOption("remove-obsolete-domains")
+					|| Main.getCommandLine().hasOption("remove-unused-exceptions")) {
+				int obsoleteDomainsCount = 0;
+				int unusedExceptionsCount = 0;
 
-				if (0 < obsoleteDomains.size()) {
-					if (Main.getCommandLine().hasOption("remove-obsolete-domains")) {
-						getDomains().remove(obsoleteDomains);
+				Iterator<Domain> exceptionsIterator = getExceptions().iterator();
+				while (exceptionsIterator.hasNext()) {
+					Domain exception = exceptionsIterator.next();
+
+					SortedSet<Domain> obsoleteDomains = getDomains().findChildrenOf(exception);
+
+					if (0 < obsoleteDomains.size()) {
+						if (Main.getCommandLine().hasOption("remove-obsolete-domains")) {
+							getDomains().remove(obsoleteDomains);
+							obsoleteDomainsCount += obsoleteDomains.size();
+
+							if (Main.getCommandLine().hasOption("verbose")) {
+								System.out.println(String.format(
+										"    ... removing %d obsolete domain(s) (from exception '%s'):",
+										obsoleteDomains.size(),
+										exception
+								));
+								System.out.println("            " + DomainList.toString(obsoleteDomains));
+							}
+						}
 					}
-				}
 
-				if (0 == obsoleteDomains.size() || Main.getCommandLine().hasOption("remove-obsolete-domains")) {
-					Domain parent = exception.findParentIn(getDomains().getDomains());
-					if (null == parent) {
-						if (Main.getCommandLine().hasOption("remove-unused-exceptions")) {
-							exceptionsIterator.remove();
+					if (0 == obsoleteDomains.size() || Main.getCommandLine().hasOption("remove-obsolete-domains")) {
+						Domain parent = exception.findParentIn(getDomains().getDomains());
+						if (null == parent) {
+							if (Main.getCommandLine().hasOption("remove-unused-exceptions")) {
+								exceptionsIterator.remove();
+								unusedExceptionsCount++;
+
+								if (Main.getCommandLine().hasOption("verbose")) {
+									if (0 < obsoleteDomains.size()) {
+										System.out.println(String.format(
+												"    ... removing unused exception '%s' (no domain(s) left)",
+												exception
+										));
+									}
+									else {
+										System.out.println(String.format(
+												"    ... removing unused exception '%s'",
+												exception
+										));
+									}
+								}
+							}
 						}
 					}
 				}
-			}
 
-			System.out.println("optimized domains = " + getDomains());
-			System.out.println("optimized exceptions = " + getExceptions());
+				System.out.println(String.format(
+						">>> %d domain(s) (removed %d obsolete domain(s))",
+						getDomains().size(),
+						obsoleteDomainsCount
+				));
+				System.out.println(String.format(
+						">>> %d exception(s) (removed %d unused exception(s))",
+						getExceptions().size(),
+						unusedExceptionsCount
+				));
+				System.out.println();
+			}
 		}
 
-		saveDomains();
-		saveExceptions();
+		if (saveDomains()) {
+			System.out.println(String.format(
+					">>> %d domain(s) saved",
+					getDomains().size()
+			));
+			System.out.println();
+		}
+
+		if (saveExceptions()) {
+			System.out.println(String.format(
+					">>> %d exception(s) saved",
+					getExceptions().size()
+			));
+			System.out.println();
+		}
 	}
 }

@@ -34,9 +34,13 @@ public class DomainList implements Iterable<Domain> {
 		this.domains = domains;
 	}
 
+	public static String toString(SortedSet<Domain> domains) {
+		return StringUtils.join(domains, ", ");
+	}
+
 	@Override
 	public String toString() {
-		return "{" + StringUtils.join(this, ",") + "}";
+		return toString(getDomains());
 	}
 
 	@Override
@@ -117,14 +121,15 @@ public class DomainList implements Iterable<Domain> {
 				uniqueDomains.add(domain);
 			}
 			else {
+				redundantDomains.add(domain);
+
 				if (Main.getCommandLine().hasOption("verbose")) {
 					System.out.println(String.format(
-							"    ... removed redundant '%s'",
-							domain
+							"    ... removed redundant '%s' (from '%s')",
+							domain,
+							parent
 					));
 				}
-
-				redundantDomains.add(domain);
 			}
 		}
 		setDomains(uniqueDomains);
