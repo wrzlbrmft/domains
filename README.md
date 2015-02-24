@@ -46,18 +46,18 @@ All available options are:
  -e,--exceptions <file>          load exception list from text file
  -h,--help                       print this help message and exit
  -o,--remove-obsolete-domains    remove obsolete domain list entries (e.g.
-                                 if ".com" is on the exception list, the
-                                 domain list entry ".foo.com" is obsolete
+                                 if "com" is on the exception list, the
+                                 domain list entry "foo.com" is obsolete
                                  and removed)
- -r,--remove-redundant           remove redundant list entries (e.g.
-                                 ".com" includes ".foo.com", so ".foo.com"
-                                 is redundant and removed)
+ -r,--remove-redundant           remove redundant list entries (e.g. "com"
+                                 includes "foo.com", so "foo.com" is
+                                 redundant and removed)
  -s,--save-domains <file>        save optimized domain list as new text
                                  file
  -u,--remove-unused-exceptions   remove unused exception list entries
-                                 (e.g. if ".com" is NOT on the domain
-                                 list, the exception list entry ".foo.com"
-                                 is unused and removed)
+                                 (e.g. if "com" is not on the domain list,
+                                 the exception list entry "foo.com" is
+                                 unused and removed)
  -v,--verbose                    be more verbose
     --version                    print version info and exit
  -x,--save-exceptions <file>     save optimized exception list as new text
@@ -83,19 +83,22 @@ A domain list is a simple text file, containing one domain name per line:
 **Example**
 
 ```
-.foo.com
-.bar.com
-.www.xyz.net
-.org
+foo.com
+bar.com
+www.xyz.net
+org
 ```
 
-Each domain name usually starts with a dot (`.`) and includes all of its
-sub-domains. E.g. `.foo.com` includes `.www.foo.com`, `.bar.foo.com` etc.
+Each domain includes all of its sub-domains. E.g. `foo.com` includes
+`www.foo.com`, `bar.foo.com` etc.
+
+**NOTE:** To put a top-level-domain like `.com` on a list, simply use `com`,
+without the leading dot. Otherwise it will be auto-corrected.
 
 ### Exception Lists
 
-*domains* also supports exception lists to express rules like *"'.com' except
-'.youtube.com'"*. An exception list is a second file loaded in conjunction with
+*domains* also supports exception lists to express rules like *"'com' except
+'youtube.com'"*. An exception list is a second file loaded in conjunction with
 a domain list; also a simple text file, containing one (exception) domain name
 per line.
 
@@ -115,15 +118,15 @@ following order:
 1. remove the last `://` and everything before it
 2. remove the first `:` and everything after it
 3. remove the first `/` and everything after it
-4. ensure that the domain name starts with a dot (`.`)
+4. ensure that the domain name does not start with a dot (`.`)
 5. change to lower-case letters
 
-**NOTE:** Because of rule #4, `[.]foo.com` does not include `[.]barfoo.com` even
-if you put `foo.com` on a list without the leading dot.
+**NOTE:** Even with rule #4, `[.]foo.com` does not include `[.]barfoo.com`, no
+matter if you put `foo.com` on a list with or without the leading dot.
 
 **Example**
 
-All of the following entries are auto-corrected to `.www.foo.com`:
+All of the following entries are auto-corrected to `www.foo.com`:
 
 ```
 http://www.foo.com/
@@ -136,17 +139,17 @@ https://www.foo.com/bar/index.html
 
 *(Sorting is always applied to any list loaded.)*
 
-Domain names are sorted as reverse-strings (`.foo.com` as `moc.oof.`) to keep
+Domain names are sorted as reverse-strings (`foo.com` as `moc.oof`) to keep
 different sub-domains next to each other.
 
 **Example**
 
 ```
-.www.foo.com
-.bar.net
-.ftp.foo.com
-.www.bar.net
-.foo.com
+www.foo.com
+bar.net
+ftp.foo.com
+www.bar.net
+foo.com
 ```
 
 becomes
@@ -167,12 +170,12 @@ domain name, then being de-duplicated.
 #### Remove Redundant List Entries
 
 Domain names always include all their sub-domains. Therefore, in the following
-list, all entries except `.com` are redundant:
+list, all entries except `com` are redundant:
 
 ```
-.foo.com
-.com
-.bar.com
+foo.com
+com
+bar.com
 ```
 
 Use the `-r` or `--remove-redundant` command-line options to remove the
@@ -202,16 +205,16 @@ Any domain list entry included in an exception list entry is obsolete.
 
 Domain list:
 ```
-.www.foo.com
+www.foo.com
 ```
 
 Exception list:
 ```
-.foo.com
+foo.com
 ```
 
-Since the exception `.foo.com` includes `.www.foo.com` on the domain list,
-`.www.foo.com` can be removed from the domain list.
+Since the exception `foo.com` includes `www.foo.com` on the domain list,
+`www.foo.com` can be removed from the domain list.
 
 Use the `-o` or `--remove-obsolete-domains` command-line option to remove the
 obsolete domain list entries.
@@ -224,15 +227,15 @@ Any exception not being a sub-domain of a domain list entry is unused.
 
 Domain list:
 ```
-.foo.com
+foo.com
 ```
 
 Exception list:
 ```
-.bar.com
+bar.com
 ```
 
-Since `.bar.com` is not a sub-domain of any domain list entry, it can be removed
+Since `bar.com` is not a sub-domain of any domain list entry, it can be removed
 from the exception list.
 
 Use the `-u` or `--remove-unused-exceptions` command-line option to remove the

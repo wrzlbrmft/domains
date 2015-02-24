@@ -140,7 +140,7 @@ public class DomainList implements Iterable<Domain> {
 	public SortedSet<Domain> findChildrenOf(Domain parent) {
 		SortedSet<Domain> children = new TreeSet<>();
 		for (Domain domain : getDomains()) {
-			if (domain.getName().endsWith(parent.getName())) {
+			if (("." + domain.getName()).endsWith("." + parent.getName())) {
 				children.add(domain);
 			}
 		}

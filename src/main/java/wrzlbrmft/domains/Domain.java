@@ -44,8 +44,8 @@ public class Domain implements Comparable<Domain> {
 			name = StringUtils.substringBefore(name, "/");
 		}
 
-		if (!name.startsWith(".")) {
-			name = "." + name;
+		if (name.startsWith(".")) {
+			name = name.substring(1);
 		}
 
 		name = name.toLowerCase();
@@ -65,7 +65,7 @@ public class Domain implements Comparable<Domain> {
 
 	public Domain findParentIn(SortedSet<Domain> domains) {
 		for (Domain domain : domains) {
-			if (getName().endsWith(domain.getName())) {
+			if (("." + getName()).endsWith("." + domain.getName())) {
 				return domain;
 			}
 		}
