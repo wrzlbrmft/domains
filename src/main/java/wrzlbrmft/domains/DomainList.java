@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
@@ -48,8 +49,8 @@ public class DomainList implements Iterable<Domain> {
 		return getDomains().iterator();
 	}
 
-	public SortedSet<String> getDomainNames() {
-		SortedSet<String> domainNames = new TreeSet<>();
+	public List<String> getDomainNames() {
+		List<String> domainNames = new ArrayList<>();
 		for (Domain domain : getDomains()) {
 			domainNames.add(domain.getName());
 		}

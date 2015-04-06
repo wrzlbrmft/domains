@@ -155,7 +155,11 @@ foo.com
 becomes
 
 ```
-(tba)
+foo.com
+ftp.foo.com
+www.foo.com
+bar.net
+www.bar.net
 ```
 
 #### Remove Duplicate List Entries
