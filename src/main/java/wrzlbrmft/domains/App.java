@@ -89,7 +89,23 @@ public final class App implements Runnable {
 				.withArgName("file")
 				.create("x")
 		);
+		/*
+		options.addOption(OptionBuilder
+				.withLongOpt("check-whitelist")
+				.withDescription("check a domain by treating the loaded domain(/exception) list as whitelist(s)")
+				.hasArg()
+				.withArgName("domain")
+				.create("w")
+		);
 
+		options.addOption(OptionBuilder
+				.withLongOpt("check-blacklist")
+				.withDescription("check a domain by treating the loaded domain(/exception) list as blacklist(s)")
+				.hasArg()
+				.withArgName("domain")
+				.create("b")
+		);
+		*/
 		options.addOption(OptionBuilder
 				.withLongOpt("verbose")
 				.withDescription("be more verbose")
@@ -134,6 +150,28 @@ public final class App implements Runnable {
 			String saveExceptionsFileName = Main.getCommandLine().getOptionValue("save-exceptions");
 			return getExceptions().save(saveExceptionsFileName);
 		}
+		return false;
+	}
+
+	public boolean checkWhitelist() {
+		Domain checkDomain = new Domain(Domain.parse(Main.getCommandLine().getOptionValue("check-whitelist")));
+
+		System.out.println(String.format(
+				"    ... checking '%s'...",
+				checkDomain
+		));
+
+		return false;
+	}
+
+	public boolean checkBlacklist() {
+		Domain checkDomain = new Domain(Domain.parse(Main.getCommandLine().getOptionValue("check-blacklist")));
+
+		System.out.println(String.format(
+				"    ... checking '%s'...",
+				checkDomain
+		));
+
 		return false;
 	}
 
@@ -262,6 +300,28 @@ public final class App implements Runnable {
 					">>> %d exception(s) saved",
 					getExceptions().size()
 			));
+			System.out.println();
+		}
+
+		if (Main.getCommandLine().hasOption("check-whitelist")) {
+			System.out.println("*** checking domain in whitelist mode");
+			if (checkWhitelist()) {
+				System.out.println(">>> domain is on the whitelist");
+			}
+			else {
+				System.out.println(">>> domain is NOT on the whitelist");
+			}
+			System.out.println();
+		}
+
+		if (Main.getCommandLine().hasOption("check-blacklist")) {
+			System.out.println("*** checking domain in blacklist mode");
+			if (checkBlacklist()) {
+				System.out.println(">>> domain is on the blacklist");
+			}
+			else {
+				System.out.println(">>> domain is NOT on the blacklist");
+			}
 			System.out.println();
 		}
 	}
