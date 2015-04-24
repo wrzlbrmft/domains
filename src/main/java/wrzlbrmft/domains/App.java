@@ -89,7 +89,7 @@ public final class App implements Runnable {
 				.withArgName("file")
 				.create("x")
 		);
-		/*
+
 		options.addOption(OptionBuilder
 				.withLongOpt("check-whitelist")
 				.withDescription("check a domain by treating the loaded domain(/exception) list as whitelist(s)")
@@ -105,7 +105,7 @@ public final class App implements Runnable {
 				.withArgName("domain")
 				.create("b")
 		);
-		*/
+
 		options.addOption(OptionBuilder
 				.withLongOpt("verbose")
 				.withDescription("be more verbose")
@@ -153,24 +153,53 @@ public final class App implements Runnable {
 		return false;
 	}
 
-	public boolean checkWhitelist() {
-		Domain checkDomain = new Domain(Domain.parse(Main.getCommandLine().getOptionValue("check-whitelist")));
+	public boolean checkDomain(String name) {
+		Domain domain = new Domain(name);
 
 		System.out.println(String.format(
-				"    ... checking '%s'...",
-				checkDomain
+				"    domain is '%s'",
+				domain
 		));
 
-		return false;
-	}
+		if (null != getDomains()) {
+			System.out.println("    checking against domain list...");
+			Domain domainsDomain = domain.findParentIn(getDomains().getDomains());
 
-	public boolean checkBlacklist() {
-		Domain checkDomain = new Domain(Domain.parse(Main.getCommandLine().getOptionValue("check-blacklist")));
+			if (null != domainsDomain) {
+				System.out.println(String.format(
+						"    ... domain is on domain list (via '%s')",
+						domainsDomain
+				));
 
-		System.out.println(String.format(
-				"    ... checking '%s'...",
-				checkDomain
-		));
+				if (null != getExceptions()) {
+					System.out.println("    checking against exception list...");
+					Domain exceptionsDomain = domain.findParentIn(getExceptions().getDomains());
+
+					if (null != exceptionsDomain) {
+						System.out.println(String.format(
+								"    ... domain is on exception list (via '%s')",
+								exceptionsDomain
+						));
+
+						return false;
+					}
+					else {
+						System.out.println("    ... domain is NOT on exception list");
+					}
+				}
+				else {
+					System.out.println("    no exception list loaded");
+				}
+
+				return true;
+			}
+			else {
+				System.out.println("    ... domain is NOT on domain list");
+			}
+		}
+		else {
+			System.out.println("    no domain list loaded");
+		}
 
 		return false;
 	}
@@ -283,8 +312,8 @@ public final class App implements Runnable {
 						getExceptions().size(),
 						unusedExceptionsCount
 				));
-				System.out.println();
 			}
+			System.out.println();
 		}
 
 		if (saveDomains()) {
@@ -305,22 +334,50 @@ public final class App implements Runnable {
 
 		if (Main.getCommandLine().hasOption("check-whitelist")) {
 			System.out.println("*** checking domain in whitelist mode");
-			if (checkWhitelist()) {
+			String checkWhitelist = Domain.parse(Main.getCommandLine().getOptionValue("check-whitelist"));
+
+			if (checkDomain(checkWhitelist)) {
 				System.out.println(">>> domain is on the whitelist");
+
+				System.out.println(String.format(
+						">>> DELIVERY for '%s' ('%s')",
+						Main.getCommandLine().getOptionValue("check-whitelist"),
+						checkWhitelist
+				));
 			}
 			else {
 				System.out.println(">>> domain is NOT on the whitelist");
+
+				System.out.println(String.format(
+						">>> NO DELIVERY for '%s' ('%s')",
+						Main.getCommandLine().getOptionValue("check-whitelist"),
+						checkWhitelist
+				));
 			}
 			System.out.println();
 		}
 
 		if (Main.getCommandLine().hasOption("check-blacklist")) {
 			System.out.println("*** checking domain in blacklist mode");
-			if (checkBlacklist()) {
+			String checkBlacklist = Domain.parse(Main.getCommandLine().getOptionValue("check-blacklist"));
+
+			if (checkDomain(checkBlacklist)) {
 				System.out.println(">>> domain is on the blacklist");
+
+				System.out.println(String.format(
+						">>> NO DELIVERY for '%s' ('%s')",
+						Main.getCommandLine().getOptionValue("check-blacklist"),
+						checkBlacklist
+				));
 			}
 			else {
 				System.out.println(">>> domain is NOT on the blacklist");
+
+				System.out.println(String.format(
+						">>> DELIVERY for '%s' ('%s')",
+						Main.getCommandLine().getOptionValue("check-blacklist"),
+						checkBlacklist
+				));
 			}
 			System.out.println();
 		}
