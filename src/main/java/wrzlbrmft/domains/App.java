@@ -92,17 +92,17 @@ public final class App implements Runnable {
 
 		options.addOption(OptionBuilder
 				.withLongOpt("check-whitelist")
-				.withDescription("check a domain by treating the loaded domain(/exception) list as whitelist(s)")
+				.withDescription("check if the domain name would be whitelisted, when treating the loaded domain(/exception) list(s) as whitelist configuration")
 				.hasArg()
-				.withArgName("domain")
+				.withArgName("domainName")
 				.create("w")
 		);
 
 		options.addOption(OptionBuilder
 				.withLongOpt("check-blacklist")
-				.withDescription("check a domain by treating the loaded domain(/exception) list as blacklist(s)")
+				.withDescription("check if the domain name would be blacklisted, when treating the loaded domain(/exception) list(s) as blacklist configuration")
 				.hasArg()
-				.withArgName("domain")
+				.withArgName("domainName")
 				.create("b")
 		);
 
@@ -333,7 +333,7 @@ public final class App implements Runnable {
 		}
 
 		if (Main.getCommandLine().hasOption("check-whitelist")) {
-			System.out.println("*** checking domain in whitelist mode");
+			System.out.println("*** checking domain name, whitelist configuration");
 			String checkWhitelist = Domain.parse(Main.getCommandLine().getOptionValue("check-whitelist"));
 
 			if (checkDomain(checkWhitelist)) {
@@ -358,7 +358,7 @@ public final class App implements Runnable {
 		}
 
 		if (Main.getCommandLine().hasOption("check-blacklist")) {
-			System.out.println("*** checking domain in blacklist mode");
+			System.out.println("*** checking domain name, blacklist configuration");
 			String checkBlacklist = Domain.parse(Main.getCommandLine().getOptionValue("check-blacklist"));
 
 			if (checkDomain(checkBlacklist)) {

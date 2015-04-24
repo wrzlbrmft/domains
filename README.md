@@ -15,6 +15,7 @@ of domain lists, e.g. to be used as whitelists or blacklists.
   * Remove obsolete domain list entries
   * Remove unused exception list entries
 * Save optimized lists as new files
+* Check if a domain name would be whitelisted/blacklisted
 
 ## Download
 
@@ -42,26 +43,34 @@ java -jar domains.jar -h
 All available options are:
 
 ```
- -d,--domains <file>             load domain list from text file
- -e,--exceptions <file>          load exception list from text file
- -h,--help                       print this help message and exit
- -o,--remove-obsolete-domains    remove obsolete domain list entries (e.g.
-                                 if "com" is on the exception list, the
-                                 domain list entry "foo.com" is obsolete
-                                 and removed)
- -r,--remove-redundant           remove redundant list entries (e.g. "com"
-                                 includes "foo.com", so "foo.com" is
-                                 redundant and removed)
- -s,--save-domains <file>        save optimized domain list as new text
-                                 file
- -u,--remove-unused-exceptions   remove unused exception list entries
-                                 (e.g. if "com" is not on the domain list,
-                                 the exception list entry "foo.com" is
-                                 unused and removed)
- -v,--verbose                    be more verbose
-    --version                    print version info and exit
- -x,--save-exceptions <file>     save optimized exception list as new text
-                                 file
+ -b,--check-blacklist <domainName>   check if the domain name would be
+                                     blacklisted, when treating the loaded
+                                     domain(/exception) list(s) as
+                                     blacklist configuration
+ -d,--domains <file>                 load domain list from text file
+ -e,--exceptions <file>              load exception list from text file
+ -h,--help                           print this help message and exit
+ -o,--remove-obsolete-domains        remove obsolete domain list entries
+                                     (e.g. if "com" is on the exception
+                                     list, the domain list entry "foo.com"
+                                     is obsolete and removed)
+ -r,--remove-redundant               remove redundant list entries (e.g.
+                                     "com" includes "foo.com", so
+                                     "foo.com" is redundant and removed)
+ -s,--save-domains <file>            save optimized domain list as new
+                                     text file
+ -u,--remove-unused-exceptions       remove unused exception list entries
+                                     (e.g. if "com" is not on the domain
+                                     list, the exception list entry
+                                     "foo.com" is unused and removed)
+ -v,--verbose                        be more verbose
+    --version                        print version info and exit
+ -w,--check-whitelist <domainName>   check if the domain name would be
+                                     whitelisted, when treating the loaded
+                                     domain(/exception) list(s) as
+                                     whitelist configuration
+ -x,--save-exceptions <file>         save optimized exception list as new
+                                     text file
 ```
 
 ### Quick Start
@@ -75,6 +84,34 @@ java -jar domains.jar -d domains.txt -r -s domains-optimized.txt
 ```
 
 Read further for more available optimizations.
+
+#### Checking Domain Names
+
+You can check if a given domain name would be whitelisted/blacklisted, when
+treating the loaded domain(/exception) list(s) as whitelist/blacklist
+configuration.
+
+Load the domain list from `domains.txt` and the exception list from
+`exceptions.txt`. Check if `www.foo.com` would be whitelisted, when treating the
+loaded lists as whitelist configuration:
+
+```
+java -jar domains.jar -d domains.txt -e exceptions.txt -w www.foo.com
+```
+
+Load the domain list from `domains.txt` and the exception list from
+`exceptions.txt`. Check if `www.bar.com` would be blacklisted, when treating the
+loaded lists as blacklist configuration:
+
+```
+java -jar domains.jar -d domains.txt -e exceptions.txt -b www.bar.com
+```
+
+You can check domain names for being whitelisted/blacklisted at the same time:
+
+```
+java -jar domains.jar -d domains.txt -e exceptions.txt -w www.foo.com -b www.bar.com
+```
 
 ## Domain Lists
 
