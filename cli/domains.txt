@@ -1,6 +1,5 @@
-.
-.
-.
-.
-.
-
+foo.com
+bar.com
+.foobar.com
+www.bar.com
+foobar.de
