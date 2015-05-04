@@ -70,18 +70,27 @@ public class DomainList implements Iterable<Domain> {
 
 				if (StringUtils.isNotBlank(line)) {
 					if (!line.contains(" ")) {
-						Domain domain = new Domain(Domain.parse(line));
+						String parsedDomain = Domain.parse(line);
+						if (StringUtils.isNotBlank(parsedDomain)) {
+							Domain domain = new Domain(parsedDomain);
 
-						if (!getDomains().contains(domain)) {
-							getDomains().add(domain);
+							if (!getDomains().contains(domain)) {
+								getDomains().add(domain);
+							}
+							else {
+								if (Main.getCommandLine().hasOption("verbose")) {
+									System.out.println(String.format(
+											"    ... removed duplicate '%s'",
+											domain
+									));
+								}
+							}
 						}
 						else {
-							if (Main.getCommandLine().hasOption("verbose")) {
-								System.out.println(String.format(
-										"    ... removed duplicate '%s'",
-										domain
-								));
-							}
+							System.out.println(String.format(
+									"    ... ignoring auto-correct to NULL '%s'",
+									line
+							));
 						}
 					}
 				}
