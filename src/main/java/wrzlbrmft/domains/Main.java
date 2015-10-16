@@ -1,10 +1,10 @@
 package wrzlbrmft.domains;
 
-import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
@@ -69,23 +69,23 @@ public class Main {
 	public static Options getOptions() {
 		Options options = new Options();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("version")
-				.withDescription("print version info and exit")
-				.create()
+		options.addOption(Option.builder("v")
+				.longOpt("version")
+				.desc("print version info and exit")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("help")
-				.withDescription("print this help message and exit")
-				.create("h")
+		options.addOption(Option.builder("h")
+				.longOpt("help")
+				.desc("print this help message and exit")
+				.build()
 		);
 
 		return options;
 	}
 
 	public static void parseCommandLine(String[] args) throws ParseException {
-		CommandLineParser commandLineParser = new BasicParser();
+		CommandLineParser commandLineParser = new DefaultParser();
 		setCommandLine(commandLineParser.parse(App.getOptions(), args));
 	}
 

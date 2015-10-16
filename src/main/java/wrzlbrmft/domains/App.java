@@ -1,5 +1,6 @@
 package wrzlbrmft.domains;
 
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
@@ -40,76 +41,76 @@ public final class App implements Runnable {
 	public static Options getOptions() {
 		Options options = Main.getOptions();
 
-		options.addOption(OptionBuilder
-				.withLongOpt("domains")
-				.withDescription("load domain list from text file")
+		options.addOption(Option.builder("d")
+				.longOpt("domains")
+				.desc("load domain list from text file")
 				.hasArg()
-				.withArgName("file")
-				.create("d")
+				.argName("file")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("exceptions")
-				.withDescription("load exception list from text file")
+		options.addOption(Option.builder("e")
+				.longOpt("exceptions")
+				.desc("load exception list from text file")
 				.hasArg()
-				.withArgName("file")
-				.create("e")
+				.argName("file")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("remove-redundant")
-				.withDescription("remove redundant list entries (e.g. \"com\" includes \"foo.com\", so \"foo.com\" is redundant and removed)")
-				.create("r")
+		options.addOption(Option.builder("r")
+				.longOpt("remove-redundant")
+				.desc("remove redundant list entries (e.g. \"com\" includes \"foo.com\", so \"foo.com\" is redundant and removed)")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("remove-obsolete-domains")
-				.withDescription("remove obsolete domain list entries (e.g. if \"com\" is on the exception list, the domain list entry \"foo.com\" is obsolete and removed)")
-				.create("o")
+		options.addOption(Option.builder("o")
+				.longOpt("remove-obsolete-domains")
+				.desc("remove obsolete domain list entries (e.g. if \"com\" is on the exception list, the domain list entry \"foo.com\" is obsolete and removed)")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("remove-unused-exceptions")
-				.withDescription("remove unused exception list entries (e.g. if \"com\" is not on the domain list, the exception list entry \"foo.com\" is unused and removed)")
-				.create("u")
+		options.addOption(Option.builder("u")
+				.longOpt("remove-unused-exceptions")
+				.desc("remove unused exception list entries (e.g. if \"com\" is not on the domain list, the exception list entry \"foo.com\" is unused and removed)")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("save-domains")
-				.withDescription("save optimized domain list as new text file")
+		options.addOption(Option.builder("s")
+				.longOpt("save-domains")
+				.desc("save optimized domain list as new text file")
 				.hasArg()
-				.withArgName("file")
-				.create("s")
+				.argName("file")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("save-exceptions")
-				.withDescription("save optimized exception list as new text file")
+		options.addOption(Option.builder("x")
+				.longOpt("save-exceptions")
+				.desc("save optimized exception list as new text file")
 				.hasArg()
-				.withArgName("file")
-				.create("x")
+				.argName("file")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("check-whitelist")
-				.withDescription("check if the domain name would be whitelisted, when treating the loaded domain(/exception) list(s) as whitelist configuration")
+		options.addOption(Option.builder("w")
+				.longOpt("check-whitelist")
+				.desc("check if the domain name would be whitelisted, when treating the loaded domain(/exception) list(s) as whitelist configuration")
 				.hasArg()
-				.withArgName("domainName")
-				.create("w")
+				.argName("domainName")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("check-blacklist")
-				.withDescription("check if the domain name would be blacklisted, when treating the loaded domain(/exception) list(s) as blacklist configuration")
+		options.addOption(Option.builder("b")
+				.longOpt("check-blacklist")
+				.desc("check if the domain name would be blacklisted, when treating the loaded domain(/exception) list(s) as blacklist configuration")
 				.hasArg()
-				.withArgName("domainName")
-				.create("b")
+				.argName("domainName")
+				.build()
 		);
 
-		options.addOption(OptionBuilder
-				.withLongOpt("verbose")
-				.withDescription("be more verbose")
-				.create("v")
+		options.addOption(Option.builder("v")
+				.longOpt("verbose")
+				.desc("be more verbose")
+				.build()
 		);
 
 		return options;
