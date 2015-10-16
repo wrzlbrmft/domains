@@ -69,7 +69,7 @@ public class Main {
 	public static Options getOptions() {
 		Options options = new Options();
 
-		options.addOption(Option.builder("v")
+		options.addOption(Option.builder()
 				.longOpt("version")
 				.desc("print version info and exit")
 				.build()
