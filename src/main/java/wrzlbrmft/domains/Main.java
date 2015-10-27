@@ -90,10 +90,8 @@ public class Main {
 	}
 
 	public static String getCommandLineSyntax() {
-		return String.format(
-				"java -jar %s",
-				FilenameUtils.getName(getFileName())
-		);
+		return
+			"java -jar " + FilenameUtils.getName(getFileName());
 	}
 
 	public static void printVersionInfo() {
@@ -105,8 +103,17 @@ public class Main {
 		helpFormatter.printHelp(getCommandLineSyntax(), App.getOptions(), true);
 	}
 
+	public static void copyright() {
+		System.out.println();
+		System.out.println(getVersionInfo());
+		System.out.println("copyright (c) matthias path, matthias.path@lightreaction.com");
+		System.out.println();
+	}
+
 	public static void main(String[] args) {
 		loadProperties();
+
+		copyright();
 
 		try {
 			parseCommandLine(args);
@@ -116,14 +123,12 @@ public class Main {
 
 				System.exit(1);
 			}
-
-			if (getCommandLine().hasOption("version")) {
+			else if (getCommandLine().hasOption("version")) {
 				printVersionInfo();
 
 				System.exit(0);
 			}
-
-			if (getCommandLine().hasOption("help")) {
+			else if (getCommandLine().hasOption("help")) {
 				printHelpMessage();
 
 				System.exit(0);

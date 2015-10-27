@@ -6,7 +6,7 @@
 
 	<groupId>wrzlbrmft</groupId>
 	<artifactId>domains</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
 
 	<dependencies>
 		<dependency>
@@ -70,7 +70,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.4.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -86,7 +86,7 @@
 										<Built-By>${project.groupId}</Built-By>
 									</manifestEntries>
 								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"></transformer>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
 									<addHeader>false</addHeader>
 								</transformer>

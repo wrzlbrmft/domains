@@ -1,7 +1,6 @@
 package wrzlbrmft.domains;
 
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
 import java.util.Iterator;
